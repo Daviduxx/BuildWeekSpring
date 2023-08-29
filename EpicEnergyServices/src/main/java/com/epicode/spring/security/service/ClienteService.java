@@ -39,7 +39,7 @@ public class ClienteService {
 	}
 	
 	public Cliente aggiorna(long id, Cliente c) {
-		if(clienteRepo.existsById(id) || c.getId()!=id)
+		if(!clienteRepo.existsById(id) || c.getId()!=id)
 			throw new EntityNotFoundException("Impossibile trovare il Cliente");
 		return crea(c);
 	}

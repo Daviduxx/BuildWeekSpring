@@ -57,8 +57,8 @@ public class SecurityConfig {
     	http.cors(cors -> cors.disable())
     	.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests((authorize) -> authorize
-        		.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
+        		.requestMatchers(HttpMethod.GET, "/ees/**").permitAll()
+                .requestMatchers("/ees/auth/**").permitAll()
                 .anyRequest().authenticated())
         .exceptionHandling( exception -> exception
                 .authenticationEntryPoint(authenticationEntryPoint)

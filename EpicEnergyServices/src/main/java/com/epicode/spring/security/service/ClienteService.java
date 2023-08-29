@@ -29,7 +29,7 @@ public class ClienteService {
 			throw new EntityExistsException("Esiste già un cliente con questo numero di Telefono");
 		if(clienteRepo.existsByTelefonoContatto(c.getTelefonoContatto()))
 			throw new EntityExistsException("Esiste già un cliente con questo numero di Telefono");
-		return clienteRepo.save(c);	
+		return clienteRepo.save(c);
 	}
 	
 	public Cliente getById(long id) {

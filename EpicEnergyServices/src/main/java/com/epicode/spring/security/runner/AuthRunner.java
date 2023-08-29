@@ -19,6 +19,7 @@ import com.epicode.spring.security.payload.RegisterDto;
 import com.epicode.spring.security.repository.RoleRepository;
 import com.epicode.spring.security.repository.UserRepository;
 import com.epicode.spring.security.service.AuthService;
+import com.epicode.spring.security.service.ClienteService;
 import com.epicode.spring.security.service.ComuneService;
 import com.epicode.spring.security.service.ProvinciaService;
 
@@ -43,6 +44,7 @@ public class AuthRunner implements ApplicationRunner {
 	@Autowired AuthService authService;
 	@Autowired ProvinciaService provService;
 	@Autowired ComuneService comuneService;
+	@Autowired ClienteService clienteService;
 	
 	private Set<Role> adminRole;
 	private Set<Role> moderatorRole;

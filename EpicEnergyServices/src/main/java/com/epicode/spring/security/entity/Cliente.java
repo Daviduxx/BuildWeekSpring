@@ -16,7 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -66,7 +65,7 @@ public class Cliente {
 	public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento,
 			LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto,
 			String nomeContatto, String cognomeContatto, String telefonoContatto, TipoCliente tipoCliente,
-			Indirizzo sedeLegale, Indirizzo sedeOperativa, List<Fattura> fatture) {
+			Indirizzo sedeLegale, Indirizzo sedeOperativa) {
 		super();
 		
 		this.ragioneSociale = ragioneSociale;
@@ -84,7 +83,6 @@ public class Cliente {
 		this.tipoCliente = tipoCliente;
 		this.sedeLegale = sedeLegale;
 		this.sedeOperativa = sedeOperativa;
-		this.fatture = fatture;
 	}
 	
 }

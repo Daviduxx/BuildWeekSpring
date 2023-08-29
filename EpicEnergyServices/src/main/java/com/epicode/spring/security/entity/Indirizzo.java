@@ -8,11 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -33,4 +33,13 @@ public class Indirizzo {
 	private Cliente cliente;
 	@ManyToOne
 	private Comune comune;
+	
+	public Indirizzo(String via, Integer civico, String localita, String cap, Cliente cliente, Comune comune) {
+		this.via = via;
+		this.civico = civico;
+		this.localita = localita;
+		this.cap = cap;
+		this.cliente = cliente;
+		this.comune = comune;
+	}
 }

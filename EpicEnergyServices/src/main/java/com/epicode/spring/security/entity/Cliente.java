@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.epicode.spring.security.enums.TipoCliente;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Entity
 @Setter
@@ -56,10 +56,35 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private TipoCliente tipoCliente;
-	@OneToOne(mappedBy = "cliente")
+	@OneToOne(cascade = CascadeType.ALL ,mappedBy = "cliente")
 	private Indirizzo sedeLegale;
-	@OneToOne(mappedBy = "cliente")
+	@OneToOne(cascade = CascadeType.ALL ,mappedBy = "cliente")
 	private Indirizzo sedeOperativa;
 	@OneToMany(mappedBy="cliente")
 	private List<Fattura> fatture;
+	
+	public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento,
+			LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto,
+			String nomeContatto, String cognomeContatto, String telefonoContatto, TipoCliente tipoCliente,
+			Indirizzo sedeLegale, Indirizzo sedeOperativa, List<Fattura> fatture) {
+		super();
+		
+		this.ragioneSociale = ragioneSociale;
+		this.partitaIva = partitaIva;
+		this.email = email;
+		this.dataInserimento = dataInserimento;
+		this.dataUltimoContatto = dataUltimoContatto;
+		this.fatturatoAnnuale = fatturatoAnnuale;
+		this.pec = pec;
+		this.telefono = telefono;
+		this.emailContatto = emailContatto;
+		this.nomeContatto = nomeContatto;
+		this.cognomeContatto = cognomeContatto;
+		this.telefonoContatto = telefonoContatto;
+		this.tipoCliente = tipoCliente;
+		this.sedeLegale = sedeLegale;
+		this.sedeOperativa = sedeOperativa;
+		this.fatture = fatture;
+	}
+	
 }

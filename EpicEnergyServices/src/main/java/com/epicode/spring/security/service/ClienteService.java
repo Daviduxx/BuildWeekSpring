@@ -41,7 +41,20 @@ public class ClienteService {
 	public Cliente aggiorna(long id, Cliente c) {
 		if(!clienteRepo.existsById(id) || c.getId()!=id)
 			throw new EntityNotFoundException("Impossibile trovare il Cliente");
-		return crea(c);
+		if(clienteRepo.existsByEmailAndIdNot(c.getEmail(), c.getId())) 
+			throw new EntityExistsException("Esiste già un cliente con questa mail");
+		if(clienteRepo.existsByEmailContattoAndIdNot(c.getEmailContatto(), c.getId()))
+			throw new EntityExistsException("Esiste già un cliente con questa mail");
+		if(clienteRepo.existsByPartitaIvaAndIdNot(c.getPartitaIva(), c.getId()))
+			throw new EntityExistsException("Esiste già un cliente con questa PartitaIva");
+		if(clienteRepo.existsByPecAndIdNot(c.getPec(), c.getId()))
+			throw new EntityExistsException("Esiste già un cliente con questa Pec");
+		if(clienteRepo.existsByTelefonoAndIdNot(c.getTelefono(), c.getId()))
+			throw new EntityExistsException("Esiste già un cliente con questo numero di Telefono");
+		if(clienteRepo.existsByTelefonoContattoAndIdNot(c.getTelefonoContatto(), c.getId()))
+			throw new EntityExistsException("Esiste già un cliente con questo numero di Telefono");
+		
+		return clienteRepo.save(c);
 	}
 	
 	public String elimina(long id) {

@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.epicode.spring.security.entity.Cliente;
 import com.epicode.spring.security.entity.Fattura;
 import com.epicode.spring.security.repository.FatturaDAO;
 import com.epicode.spring.security.repository.FatturaPageableRepository;

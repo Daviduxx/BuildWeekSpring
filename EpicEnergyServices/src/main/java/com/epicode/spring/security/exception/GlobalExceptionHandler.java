@@ -1,5 +1,6 @@
 package com.epicode.spring.security.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,6 +24,10 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<String> dataIntegrityException(DataIntegrityViolationException e){
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
     // handle specific exceptions
     @ExceptionHandler(ResourceNotFoundException.class)

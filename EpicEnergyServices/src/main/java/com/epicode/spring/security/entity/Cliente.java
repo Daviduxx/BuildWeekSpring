@@ -2,10 +2,12 @@ package com.epicode.spring.security.entity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.epicode.spring.security.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,7 +18,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -27,65 +28,42 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="clienti")
 public class Cliente {
-	@Transient
+	@Transient @JsonIgnore
 	private String emailRegEx="^[a-z0-9]{3,15}@[a-z]{2,7}\\.[a-z]{2,5}$";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	protected Long id;
 	@Column(nullable = false)
-	private String ragioneSociale;
+	protected String ragioneSociale;
 	@Column(nullable = false, unique = true)
-	private String partitaIva;
+	protected String partitaIva;
 	@Column(nullable = false, unique = true)
-	private String email;
+	protected String email;
 	@Column(nullable = false)
-	private LocalDate dataInserimento;
-	private LocalDate dataUltimoContatto;
+	protected LocalDate dataInserimento;
+	protected LocalDate dataUltimoContatto;
 	@Column(nullable = false)
-	private Double fatturatoAnnuale;
+	protected Double fatturatoAnnuale;
 	@Column(nullable = false, unique = true)
-	private String pec;
+	protected String pec;
 	@Column(nullable = false, unique = true)
-	private String telefono;
+	protected String telefono;
 	@Column(nullable = false, unique = true)
-	private String emailContatto;
+	protected String emailContatto;
 	@Column(nullable = false)
-	private String nomeContatto;
+	protected String nomeContatto;
 	@Column(nullable = false)
-	private String cognomeContatto;
+	protected String cognomeContatto;
 	@Column(nullable = false, unique = true)
-	private String telefonoContatto;
+	protected String telefonoContatto;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private TipoCliente tipoCliente;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
-	private Indirizzo sedeLegale;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
-	private Indirizzo sedeOperativa;
+	protected TipoCliente tipoCliente;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Indirizzo> indirizzoSedi;
 	@OneToMany(mappedBy="cliente")
-	private List<Fattura> fatture;
-	
-	public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento,
-			LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto,
-			String nomeContatto, String cognomeContatto, String telefonoContatto, TipoCliente tipoCliente,
-			Indirizzo sedeLegale, Indirizzo sedeOperativa) {
-		this.ragioneSociale = ragioneSociale;
-		this.partitaIva = partitaIva;
-		this.email = email;
-		this.dataInserimento = dataInserimento;
-		this.dataUltimoContatto = dataUltimoContatto;
-		this.fatturatoAnnuale = fatturatoAnnuale;
-		this.pec = pec;
-		this.telefono = telefono;
-		this.emailContatto = emailContatto;
-		this.nomeContatto = nomeContatto;
-		this.cognomeContatto = cognomeContatto;
-		this.telefonoContatto = telefonoContatto;
-		this.tipoCliente = tipoCliente;
-		this.sedeLegale = sedeLegale;
-		this.sedeOperativa = sedeOperativa;
-	}
+	protected List<Fattura> fatture;
 
 	public void setRagioneSociale(String ragioneSociale) {
 		if(!ragioneSociale.equals(null) && ragioneSociale.length()>1) this.ragioneSociale = ragioneSociale;
@@ -103,7 +81,8 @@ public class Cliente {
 	}
 
 	public void setDataInserimento(LocalDate dataInserimento) {
-		this.dataInserimento = dataInserimento;
+		if(!dataInserimento.equals(null)) this.dataInserimento = dataInserimento;
+		else throw new DataIntegrityViolationException("Inserisci una data corretta.");
 	}
 
 	public void setDataUltimoContatto(LocalDate dataUltimoContatto) {
@@ -150,18 +129,13 @@ public class Cliente {
 		else throw new DataIntegrityViolationException("Specificare la tipologia di azienda.");
 	}
 
-	public void setSedeLegale(Indirizzo sedeLegale) {
-		if(!sedeLegale.equals(null)) this.sedeLegale = sedeLegale;
-		else throw new DataIntegrityViolationException("Specificare l'indirizzo della sede legale.");
-	}
-
-	public void setSedeOperativa(Indirizzo sedeOperativa) {
-		if(!sedeOperativa.equals(null)) this.sedeOperativa = sedeOperativa;
-		else throw new DataIntegrityViolationException("Specificare l'indirizzo della sede operativa.");
-	}
-
 	public void setFatture(List<Fattura> fatture) {
 		this.fatture = fatture;
+	}
+
+	public void setIndirizzoSedi(Set<Indirizzo> indirizzoSedi) {
+		if(indirizzoSedi.size()>0 && indirizzoSedi.size()<3) this.indirizzoSedi = indirizzoSedi;
+		else throw new DataIntegrityViolationException("Specifica gli indirizzi corretti per le sedi.");
 	}
 	
 }

@@ -3,11 +3,13 @@ package com.epicode.spring.security.entity;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.epicode.spring.security.enums.TipoIndirizzo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +37,9 @@ public class Indirizzo {
 	private String localita;
 	@Column(nullable = false)
 	private String cap;
+	@JsonIgnore
+	@ManyToOne(optional = false, fetch=FetchType.LAZY)
+	private Cliente cliente;
 	@ManyToOne
 	private Comune comune;
 	
@@ -61,5 +66,10 @@ public class Indirizzo {
 	public void setComune(Comune comune) {
 		if(!comune.equals(null)) this.comune = comune;
 		else throw new DataIntegrityViolationException("Inserisci un comune.");
+	}
+	
+	public void setCliente(Cliente cliente) {
+		if(!cliente.equals(null)) this.cliente = cliente;
+		else throw new DataIntegrityViolationException("Collega il cliente all'indirizzo.");
 	}
 }

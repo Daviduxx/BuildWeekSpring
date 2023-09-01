@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.epicode.spring.security.entity.Cliente;
 import com.epicode.spring.security.service.ClienteService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/clienti")
 public class ClienteController {
@@ -48,7 +50,7 @@ public class ClienteController {
     
     @GetMapping
     public ResponseEntity<Page<Cliente>> getAll(Pageable pageable) {
-        // http://localhost:8080/api/contacts/pageable?page=0&size=10&sort=age,ASC
+        // http://localhost:8080/clienti/?page=0&size=10&sort=age,ASC
         // ?page=0&size=10&sort=age,ASC -> sono i parametri che saranno contenuti nell'ogg di tipo Pageable
     	return new ResponseEntity<Page<Cliente>>(cs.getAllContactsPageable(pageable), HttpStatus.OK);
     }

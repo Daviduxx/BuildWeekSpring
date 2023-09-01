@@ -14,6 +14,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Table(name="clienti")
 public class Cliente {
 	@Transient @JsonIgnore
-	private String emailRegEx="^[a-z0-9]{3,15}@[a-z]{2,7}\\.[a-z]{2,5}$";
+	private String emailRegEx="^[a-z0-9.]{3,20}@[a-z]{2,7}\\.[a-z]{2,5}$";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +61,7 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	protected TipoCliente tipoCliente;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Indirizzo> indirizzoSedi;
 	@OneToMany(mappedBy="cliente")
 	protected List<Fattura> fatture;
@@ -134,7 +135,10 @@ public class Cliente {
 	}
 
 	public void setIndirizzoSedi(Set<Indirizzo> indirizzoSedi) {
-		if(indirizzoSedi.size()>0 && indirizzoSedi.size()<3) this.indirizzoSedi = indirizzoSedi;
+		if(indirizzoSedi.size()>0 && indirizzoSedi.size()<3) {
+			this.indirizzoSedi = indirizzoSedi;
+			this.indirizzoSedi.forEach(i -> i.setCliente(this));
+		}
 		else throw new DataIntegrityViolationException("Specifica gli indirizzi corretti per le sedi.");
 	}
 	

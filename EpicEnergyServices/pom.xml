@@ -91,6 +91,11 @@
 		    <artifactId>commons-csv</artifactId>
 		    <version>1.9.0</version> <!-- Verifica la versione più recente -->
 		</dependency>
+		<dependency>
+		    <groupId>com.github.javafaker</groupId>
+		    <artifactId>javafaker</artifactId>
+		    <version>1.0.2</version>
+		</dependency>
 
 	</dependencies>
 

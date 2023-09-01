@@ -1,6 +1,9 @@
 package com.epicode.spring.security.configuration;
 
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.epicode.spring.security.security.JwtAuthenticationEntryPoint;
 import com.epicode.spring.security.security.JwtAuthenticationFilter;
@@ -51,24 +55,49 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    	//http.cors().and().csrf().disable() // -> deprecato
+//    	http.cors(cors -> cors.disable())
+//    	.csrf(csrf -> csrf.disable())
+//        .authorizeHttpRequests((authorize) -> authorize
+//        		.requestMatchers(HttpMethod.GET, "/ees/**").permitAll()
+//                .requestMatchers("/ees/auth/**").permitAll()
+//                .anyRequest().authenticated())
+//        .exceptionHandling( exception -> exception
+//                .authenticationEntryPoint(authenticationEntryPoint)
+//        ).sessionManagement( session -> session
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        );
+//
+//    	http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//    	return http.build();
+//    }
+    
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	//http.cors().and().csrf().disable() // -> deprecato
-    	http.cors(cors -> cors.disable())
-    	.csrf(csrf -> csrf.disable())
+        http.cors(cors -> cors.configurationSource(request ->{
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            return config;
+        }))
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests((authorize) -> authorize
-        		.requestMatchers(HttpMethod.GET, "/ees/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 .requestMatchers("/ees/auth/**").permitAll()
                 .anyRequest().authenticated())
-        .exceptionHandling( exception -> exception
+        .exceptionHandling(exception -> exception
                 .authenticationEntryPoint(authenticationEntryPoint)
-        ).sessionManagement( session -> session
+        ).sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-    	http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    	return http.build();
+        return http.build();
     }
 
 }

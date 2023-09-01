@@ -1,0 +1,148 @@
+<div class="card">
+  <p-table #dt1 [value]="clienti" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="false"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']">
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt1.filterGlobal($event.target, 'contains')"
+            placeholder="Search keyword" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Ragione sociale
+            <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:10rem">
+          <div class="flex align-items-center justify-content-center">
+            P. Iva
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:10rem">
+          <div class="flex align-items-center justify-content-center">
+            Email
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Data inserimento
+            <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Data ultimo contatto
+            <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Fatturato annuale
+            <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:10rem">
+          <div class="flex align-items-center justify-content-center">
+            Pec
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Telefono
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Email contatto
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Nome contatto
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Cognome contatto
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Telefono contatto
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width:15rem">
+          <div class="flex align-items-center justify-content-center">
+            Tipo cliente
+            <p-columnFilter type="text" field="country.name" display="menu"></p-columnFilter>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cliente>
+      <tr>
+        <td>
+          {{ cliente.ragioneSociale }}
+        </td>
+        <td>
+          {{ cliente.partitaIva }}
+        </td>
+        <td>
+          {{ cliente.email }}
+        </td>
+        <td>
+          {{ cliente.dataInserimento | date: 'MM/dd/yyyy' }}
+        </td>
+        <td>
+          {{ cliente.dataUltimoContatto | date: 'MM/dd/yyyy' }}
+        </td>
+        <td>
+          {{ cliente.fatturatoAnnuale | currency: 'USD':'symbol' }}
+        </td>
+        <td>
+          {{ cliente.pec }}
+        </td>
+        <td>
+          {{ cliente.telefono }}
+        </td>
+        <td>
+          {{ cliente.emailContatto }}
+        </td>
+        <td>
+          {{ cliente.nomeContatto }}
+        </td>
+        <td>
+          {{ cliente.cognomeContatto }}
+        </td>
+        <td>
+          {{ cliente.telefonoContatto }}
+        </td>
+        <td>
+          {{ cliente.tipoCliente }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="13">No customers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator (onPageChange)="onPageChange($event)" [first]="0" [rows]="10" [totalRecords]="page!.totalElements" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+</div>

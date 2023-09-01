@@ -13,4 +13,8 @@ public class ComuneService {
 	public void crea(Comune c) {
 		comuneRepo.save(c);
 	}
+	
+	public Comune getById(long id) {
+		return comuneRepo.findById(id).get();
+	}
 }

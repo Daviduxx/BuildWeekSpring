@@ -1,5 +1,7 @@
 package com.epicode.spring.security.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,13 @@ public class ClienteController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<String> elimina(@PathVariable long id) {
         return new ResponseEntity<String>(cs.elimina(id), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/delete-multiple")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<String> eliminaMultiplo(@RequestBody Set<Long> ids) {
+        for (long id : ids) cs.elimina(id);
+        return new ResponseEntity<>("Clienti eliminati con successo", HttpStatus.OK);
     }
     
     @GetMapping

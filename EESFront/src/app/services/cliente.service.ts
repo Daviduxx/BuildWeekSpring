@@ -23,6 +23,14 @@ export class ClientiService {
     });
   }
 
+  eliminaClienti(ids:number[]){
+    return this.http.delete<string>(environment.clienti+"/delete-multiple", {headers: this.headers, body: ids} );
+  }
+
+  modificaCliente(cliente:ICliente){
+    return this.http.put<ICliente>(environment.clienti+"/"+cliente.id, cliente, {headers: this.headers});
+  }
+
   getCliente(id:number){
     return this.http.get<ICliente>(environment.clienti+"/"+id, {headers: this.headers});
   }

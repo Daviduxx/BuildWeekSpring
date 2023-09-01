@@ -16,6 +16,9 @@ import { ClientiTableComponent } from './pages/clienti-table/clienti-table.compo
 import { TableModule } from 'primeng/table';
 import { TokenInterceptorInterceptor } from './interceptors/token-interceptor.interceptor';
 import { PaginatorModule } from 'primeng/paginator';
+import { ToastModule } from 'primeng/toast';
+import { ToastComponent } from './components/toast/toast.component';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { PaginatorModule } from 'primeng/paginator';
     RegPageComponent,
     InputTextComponent,
     LogPageComponent,
-    ClientiTableComponent
+    ClientiTableComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,8 @@ import { PaginatorModule } from 'primeng/paginator';
     BrowserAnimationsModule,
     HttpClientModule,
     TableModule,
-    PaginatorModule
+    PaginatorModule,
+    ToastModule
   ],
   providers: [
     /* {
@@ -44,6 +49,7 @@ import { PaginatorModule } from 'primeng/paginator';
       useClass: TokenInterceptorInterceptor,
       multi: true
     } */
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

@@ -47,6 +47,10 @@ public class AuthServiceImpl implements AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    public User getUser(String username) {
+    	return userRepository.findByUsername(username).get();
+    }
+    
     @Override
     public String login(LoginDto loginDto) {
         

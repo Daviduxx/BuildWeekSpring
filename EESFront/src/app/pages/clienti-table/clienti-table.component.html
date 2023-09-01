@@ -1,5 +1,5 @@
 <div class="card">
-  <p-table #dt1 [value]="clienti" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+  <p-table (onRowSelect)="aggiungiClienteDaEliminare($event)" (onRowUnselect)="rimuoviClienteDaEliminare($event)" #dt1 [value]="clienti" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="false"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']">
@@ -15,6 +15,9 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th *ngIf="isAdmin" style="width: 4rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
         <th style="min-width:15rem">
           <div class="flex align-items-center justify-content-center">
             Ragione sociale
@@ -97,44 +100,216 @@
     </ng-template>
     <ng-template pTemplate="body" let-cliente>
       <tr>
-        <td>
+
+        <!-- PRIMA COLONNA -->
+
+        <td *ngIf="isAdmin">
+          <p-tableCheckbox [value]="cliente"></p-tableCheckbox>
+        </td>
+        <td *ngIf="!isAdmin">
           {{ cliente.ragioneSociale }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.ragioneSociale" pEditableColumnField="ragioneSociale">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input (blur)="onBlurEvent(cliente)" pInputText type="text" [(ngModel)]="cliente.ragioneSociale" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.ragioneSociale }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.partitaIva }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.partitaIva" pEditableColumnField="partitaIva">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.partitaIva" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.partitaIva }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- TERZA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.email }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.email" pEditableColumnField="email">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.email" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.email }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- QUARTA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.dataInserimento | date: 'MM/dd/yyyy' }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.dataInserimento" pEditableColumnField="dataInserimento">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="cliente.dataInserimento" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.dataInserimento }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.dataUltimoContatto | date: 'MM/dd/yyyy' }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.dataUltimoContatto" pEditableColumnField="dataUltimoContatto">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="cliente.dataUltimoContatto" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.dataUltimoContatto }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.fatturatoAnnuale | currency: 'USD':'symbol' }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.fatturatoAnnuale" pEditableColumnField="fatturatoAnnuale">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.fatturatoAnnuale" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.fatturatoAnnuale }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.pec }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.pec" pEditableColumnField="pec">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.pec" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.pec }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.telefono }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.telefono" pEditableColumnField="telefono">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.telefono" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.telefono }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.emailContatto }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.emailContatto" pEditableColumnField="emailContatto">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.emailContatto" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.emailContatto }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.nomeContatto }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.nomeContatto" pEditableColumnField="nomeContatto">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.nomeContatto" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.nomeContatto }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.cognomeContatto }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.cognomeContatto" pEditableColumnField="cognomeContatto">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.cognomeContatto" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.cognomeContatto }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.telefonoContatto }}
         </td>
-        <td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.telefonoContatto" pEditableColumnField="telefonoContatto">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.telefonoContatto" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.telefonoContatto }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <!-- SECONDA COLONNA -->
+
+        <td *ngIf="!isAdmin">
           {{ cliente.tipoCliente }}
+        </td>
+        <td *ngIf="isAdmin" [pEditableColumn]="cliente.tipoCliente" pEditableColumnField="tipoCliente">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cliente.tipoCliente" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ cliente.tipoCliente }}
+            </ng-template>
+          </p-cellEditor>
         </td>
       </tr>
     </ng-template>
@@ -144,5 +319,8 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-paginator (onPageChange)="onPageChange($event)" [first]="0" [rows]="10" [totalRecords]="page!.totalElements" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+  <p-paginator (onPageChange)="onPageChange($event)" [first]="0" [rows]="10" [totalRecords]="page!.totalElements"
+    [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
 </div>
+<p-button (onClick)="eliminaClienti()" *ngIf="ciSonoElementiDaEliminare()" styleClass="p-button-danger" label="Elimina"></p-button>
+<p-toast></p-toast>
